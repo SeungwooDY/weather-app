@@ -6,7 +6,8 @@ const API_KEY = import.meta.env.VITE_OPENWEATHER_API_KEY;
 
 export default function WeatherApp() {
     const [location, setLocation] = useState("");
-    const [weather, setWeather] = useState(null);
+    const [currentWeather, setCurrentWeather] = useState(null);
+    const [hourlyForecast, setHourlyForecast] = useState(null);
     const [lat, setLat] = useState(0);
     const [lon, setLon] = useState(0);
 
@@ -47,10 +48,11 @@ export default function WeatherApp() {
 
     const fetchWeather = async (lat, lon) => {
         console.log("fetchWeather called");
-        const response = await fetch(`https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&exclude=minutely,hourly,daily&appid=${API_KEY}`)
+        const response = await fetch(`https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&exclude=alerts,minutely&appid=${API_KEY}`)
         const weatherData = await response.json();
-        console.log(weatherData.current);
-        setWeather(weatherData.current);
+
+        setCurrentWeather(weatherData.current);
+        setHourlyForecast(weatherData.hourly);
     }
 
     const handleFetchWeather = async () => {
@@ -71,7 +73,7 @@ export default function WeatherApp() {
                 handleFetchWeather={handleFetchWeather}
             />
             <br />
-            <Display lat={lat} lon={lon} weather={weather}/>
+            <Display lat={lat} lon={lon} currentWeather={currentWeather} hourlyForecast={hourlyForecast}/>
         </>
     )
 }

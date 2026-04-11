@@ -1,8 +1,11 @@
-export default function Display({ lat, lon, weather }) {
+export default function Display({ lat, lon, currentWeather, hourlyForecast }) {
     return (
         <>
             <div className='display'>
-                {weather}
+                Current Weather: {currentWeather}
+            </div>
+            <div className='display'>
+                Hourly Forecast for tomorrow: {hourlyForecast}
             </div>
             <br />
             <div>
