@@ -1,15 +1,27 @@
 import { useState, useEffect } from 'react';
 import SearchBar from './Searchbar';
 import Display from './Display';
+import ToggleUnits from './ToggleUnits';
 
 const API_KEY = import.meta.env.VITE_OPENWEATHER_API_KEY;
 
 export default function WeatherApp() {
     const [location, setLocation] = useState("");
     const [currentWeather, setCurrentWeather] = useState(null);
-    const [hourlyForecast, setHourlyForecast] = useState(null);
     const [lat, setLat] = useState(0);
     const [lon, setLon] = useState(0);
+    const [units, setUnits] = useState("imperial"); // imperial by default
+
+    useEffect(() => {
+        const updateWeather = async () => {
+            if (!lat || !lon) {
+                return;
+            }
+            const data = await fetchWeather(lat, lon);
+            setCurrentWeather(data);
+        }
+        updateWeather();
+    },[units, lat, lon])
 
     function getCurrentLocation() {
         if (navigator.geolocation) {
@@ -48,11 +60,11 @@ export default function WeatherApp() {
 
     const fetchWeather = async (lat, lon) => {
         console.log("fetchWeather called");
-        const response = await fetch(`https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&exclude=alerts,minutely&appid=${API_KEY}`)
+        const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=${units}&appid=${API_KEY}`)
         const weatherData = await response.json();
 
-        setCurrentWeather(weatherData.current);
-        setHourlyForecast(weatherData.hourly);
+        console.log(weatherData);
+        return weatherData;
     }
 
     const handleFetchWeather = async () => {
@@ -62,6 +74,15 @@ export default function WeatherApp() {
         if (!geoCode) return;
 
         const weatherData = await fetchWeather(geoCode.lat, geoCode.lon);
+        setCurrentWeather(weatherData);
+    }
+
+    function changeUnits() {
+        if (units === "imperial") {
+            setUnits("metric");
+        } else {
+            setUnits("imperial");
+        }
     }
 
     return (
@@ -73,7 +94,9 @@ export default function WeatherApp() {
                 handleFetchWeather={handleFetchWeather}
             />
             <br />
-            <Display lat={lat} lon={lon} currentWeather={currentWeather} hourlyForecast={hourlyForecast}/>
+            <Display lat={lat} lon={lon} currentWeather={currentWeather}/>
+            <br />
+            <ToggleUnits units={units} changeUnits={changeUnits}/>
         </>
     )
 }
