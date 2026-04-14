@@ -1,10 +1,10 @@
-export default function Display({ lat, lon, currentWeather }) {
+export default function Display({ lat, lon, currentWeather, units }) {
     return (
         <>
             <div className='display'>
-                <p>Current Temp: {currentWeather?.main?.temp}</p>
-                <p>Feels Like: {currentWeather?.main?.feels_like}</p>
-                <p>Humidity: {currentWeather?.main?.humidity}</p>
+                <p>{units === "imperial" ? `Current Temp: ${currentWeather?.main?.temp} F` : `Current Temp: ${currentWeather?.main?.temp} C`}</p>
+                <p>{units === "imperial" ? `Feels Like: ${currentWeather?.main?.feels_like} F` : `Feels Like: ${currentWeather?.main?.temp} C`}</p>
+                <p>Humidity: {currentWeather?.main?.humidity}%</p>
             </div>
             <br />
             <div>

@@ -94,7 +94,7 @@ export default function WeatherApp() {
                 handleFetchWeather={handleFetchWeather}
             />
             <br />
-            <Display lat={lat} lon={lon} currentWeather={currentWeather}/>
+            <Display lat={lat} lon={lon} currentWeather={currentWeather} units={units}/>
             <br />
             <ToggleUnits units={units} changeUnits={changeUnits}/>
         </>
