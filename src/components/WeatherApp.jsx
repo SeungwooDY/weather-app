@@ -88,16 +88,19 @@ export default function WeatherApp() {
     return (
         <>
         <div class="flex items-center justify-center bg-amber-100">
-            <h1 class="mr-10 ml-10">Weather</h1>
+            <h1 class="mr-10 ml-10 ">Weather</h1>
                 <SearchBar 
                     location={location}
                     setLocation={setLocation}
                     getCurrentLocation={getCurrentLocation}
                     handleFetchWeather={handleFetchWeather}
                 />
-            </div>
-            <br />
-            <Display lat={lat} lon={lon} currentWeather={currentWeather} units={units}/>
+        </div>
+        <br />
+        <div class="flex items-center justify-center">
+        <Display lat={lat} lon={lon} currentWeather={currentWeather} units={units}/>
+        </div>
+            
             <br />
             <ToggleUnits units={units} changeUnits={changeUnits}/>
         </>
